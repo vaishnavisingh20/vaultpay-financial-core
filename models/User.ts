@@ -14,9 +14,9 @@ export interface IUser extends Document {
   createdAt: Date;
   updatedAt: Date;
   avatar?: string;
-emailVerified: boolean;
-lastLogin?: Date;
-createdBy?: mongoose.Types.ObjectId;
+  emailVerified: boolean;
+  lastLogin?: Date;
+  createdBy?: mongoose.Types.ObjectId;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -65,33 +65,41 @@ const UserSchema = new Schema<IUser>(
       type: Boolean,
       default: true,
     },
+
     avatar: {
-  type: String,
-  default: "",
-},
+      type: String,
+      default: "",
+    },
 
-emailVerified: {
-  type: Boolean,
-  default: false,
-},
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
 
-lastLogin: {
-  type: Date,
-},
+    lastLogin: {
+      type: Date,
+    },
 
-createdBy: {
-  type: Schema.Types.ObjectId,
-  ref: "User",
-},
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,
   }
 );
-UserSchema.index({ email: 1 });
-UserSchema.index({ role: 1 });
+
+
+// Keep only non-unique indexes
+UserSchema.index({
+  role: 1,
+});
+
+
 const User: Model<IUser> =
   mongoose.models.User ||
   mongoose.model<IUser>("User", UserSchema);
+
 
 export default User;
