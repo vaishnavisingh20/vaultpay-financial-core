@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import Link from "next/link";
 import {
   DollarSign,
@@ -6,7 +8,8 @@ import {
   PlusCircle,
   TrendingUp,
 } from "lucide-react";
-
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 import AppLayout from "@/components/layout/AppLayout";
 import { connectDB } from "@/lib/mongodb";
 import Invoice from "@/models/Invoice";
@@ -25,6 +28,15 @@ interface RecentInvoice {
   };
 }
 export default async function AdminDashboard() {
+    const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  if (user.role !== "admin") {
+    redirect("/403");
+  }
   await connectDB();
 
   const [

@@ -9,7 +9,7 @@ import {
 import AppLayout from "@/components/layout/AppLayout";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-
+export const dynamic = "force-dynamic";
 interface Props {
   searchParams: Promise<{
     session_id?: string;

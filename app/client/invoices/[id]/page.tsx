@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import {
@@ -13,8 +15,6 @@ import { connectDB } from "@/lib/mongodb";
 import Invoice from "@/models/Invoice";
 import { getCurrentUser } from "@/lib/auth";
 import { formatCurrency } from "@/utils/formatCurrency";
-
-export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{

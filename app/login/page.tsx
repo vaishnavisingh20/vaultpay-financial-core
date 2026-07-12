@@ -1,29 +1,18 @@
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 import LoginForm from "@/components/auth/LoginForm";
 import AppLayout from "@/components/layout/AppLayout";
-import { getCurrentUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Login | VaultPay Financial Core",
   description: "Secure login to your VaultPay account",
 };
 
-export default async function LoginPage() {
-  const user = await getCurrentUser();
-
-  if (user) {
-    if (user.role === "admin") {
-      redirect("/admin/dashboard");
-    }
-
-    redirect("/client/dashboard");
-  }
-
+export default function LoginPage() {
   return (
     <AppLayout>
       <section className="flex min-h-[80vh] items-center justify-center">
+
         <div className="grid w-full max-w-6xl overflow-hidden rounded-4xl border border-slate-800 bg-slate-900/60 shadow-2xl backdrop-blur-xl lg:grid-cols-2">
 
           {/* Left Side */}
@@ -93,6 +82,7 @@ export default async function LoginPage() {
           </div>
 
         </div>
+
       </section>
     </AppLayout>
   );

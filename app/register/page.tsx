@@ -1,26 +1,14 @@
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 import RegisterForm from "@/components/auth/RegisterForm";
 import AppLayout from "@/components/layout/AppLayout";
-import { getCurrentUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Register | VaultPay Financial Core",
   description: "Create your VaultPay account",
 };
 
-export default async function RegisterPage() {
-  const user = await getCurrentUser();
-
-  if (user) {
-    if (user.role === "admin") {
-      redirect("/admin/dashboard");
-    }
-
-    redirect("/client/dashboard");
-  }
-
+export default function RegisterPage() {
   return (
     <AppLayout>
       <section className="flex min-h-[80vh] items-center justify-center">
@@ -49,6 +37,7 @@ export default async function RegisterPage() {
             <div className="mt-12 space-y-6">
 
               <div className="flex items-center gap-4">
+
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-xl">
                   ✓
                 </div>
@@ -62,9 +51,11 @@ export default async function RegisterPage() {
                     Generate invoices in seconds.
                   </p>
                 </div>
+
               </div>
 
               <div className="flex items-center gap-4">
+
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-xl">
                   ✓
                 </div>
@@ -78,9 +69,11 @@ export default async function RegisterPage() {
                     Powered by Stripe Checkout.
                   </p>
                 </div>
+
               </div>
 
               <div className="flex items-center gap-4">
+
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-xl">
                   ✓
                 </div>
@@ -94,6 +87,7 @@ export default async function RegisterPage() {
                     Download invoices and email receipts instantly.
                   </p>
                 </div>
+
               </div>
 
             </div>
