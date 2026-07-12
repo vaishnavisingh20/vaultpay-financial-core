@@ -1,25 +1,37 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { NextResponse } from "next/server";
+import { PDFDocument, StandardFonts } from "pdf-lib";
 
 import { connectDB } from "@/lib/mongodb";
 import Invoice from "@/models/Invoice";
 import { getCurrentUser } from "@/lib/auth";
 
-interface Props {
-  params: {
-    id: string;
-  };
+
+interface InvoiceItem {
+  description: string;
+  quantity: number;
+  total: number;
 }
 
+
 export async function GET(
-  request: NextRequest,
-  { params }: Props
+  request: Request,
+  context: {
+    params: Promise<{
+      id: string;
+    }>;
+  }
 ) {
-  
+
+  const { id } = await context.params;
+
+
   try {
+
     const user = await getCurrentUser();
 
+
     if (!user) {
+
       return NextResponse.json(
         {
           success: false,
@@ -29,22 +41,36 @@ export async function GET(
           status: 401,
         }
       );
+
     }
-if (user.role !== "client") {
-  return NextResponse.json(
-    { success: false, message: "Forbidden" },
-    { status: 403 }
-  );
-}
+
+
+    if (user.role !== "client") {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Forbidden",
+        },
+        {
+          status: 403,
+        }
+      );
+
+    }
+
+
     await connectDB();
 
+
     const invoice = await Invoice.findOne({
-      _id: params.id,
+      _id: id,
       client: user._id,
     }).lean();
 
 
     if (!invoice) {
+
       return NextResponse.json(
         {
           success: false,
@@ -54,11 +80,12 @@ if (user.role !== "client") {
           status: 404,
         }
       );
+
     }
 
 
-    const pdfDoc =
-      await PDFDocument.create();
+
+    const pdfDoc = await PDFDocument.create();
 
 
     const page = pdfDoc.addPage([
@@ -67,10 +94,9 @@ if (user.role !== "client") {
     ]);
 
 
-    const font =
-      await pdfDoc.embedFont(
-        StandardFonts.Helvetica
-      );
+    const font = await pdfDoc.embedFont(
+      StandardFonts.Helvetica
+    );
 
 
     page.drawText(
@@ -132,7 +158,7 @@ if (user.role !== "client") {
 
 
     invoice.items.forEach(
-      (item: any) => {
+      (item: InvoiceItem) => {
 
         page.drawText(
           `${item.description} x${item.quantity} - $${item.total}`,
@@ -144,7 +170,9 @@ if (user.role !== "client") {
           }
         );
 
+
         y -= 25;
+
       }
     );
 
@@ -160,41 +188,39 @@ if (user.role !== "client") {
     );
 
 
-    const pdfBytes =
-  await pdfDoc.save();
-
-const pdfBuffer =
-  Buffer.from(pdfBytes);
+    const pdfBytes = await pdfDoc.save();
 
 
     return new NextResponse(
-  pdfBuffer,
-  {
-    status: 200,
-    headers: {
-      "Content-Type":
-        "application/pdf",
+      Buffer.from(pdfBytes),
+      {
+        status: 200,
 
-      "Content-Disposition":
-        `attachment; filename="${invoice.invoiceNumber}.pdf"`,
-    },
-  }
-);
+        headers: {
+          "Content-Type": "application/pdf",
+
+          "Content-Disposition":
+            `attachment; filename="${invoice.invoiceNumber}.pdf"`,
+        },
+      }
+    );
 
 
-  } catch (error) {
+  } catch (error: unknown) {
+
 
     console.error(
       "PDF GENERATION ERROR:",
-      error
+      error instanceof Error
+        ? error.message
+        : error
     );
 
 
     return NextResponse.json(
       {
         success: false,
-        message:
-          "Unable to generate PDF",
+        message: "Unable to generate PDF",
       },
       {
         status: 500,
@@ -202,4 +228,5 @@ const pdfBuffer =
     );
 
   }
+
 }

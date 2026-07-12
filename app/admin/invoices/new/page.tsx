@@ -165,9 +165,13 @@ export default function CreateInvoicePage() {
       toast.success("Invoice created");
 
       router.push("/admin/dashboard");
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
+    } catch (error: unknown) {
+  toast.error(
+    error instanceof Error
+      ? error.message
+      : "Something went wrong"
+  );
+} finally {
       setLoading(false);
     }
   }

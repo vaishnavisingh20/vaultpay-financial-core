@@ -622,7 +622,7 @@ export default function Home() {
                 </div>
 
                 <p className="leading-8 text-slate-300">
-                  "{item.review}"
+                  &quot;{item.review}&quot;
                 </p>
 
                 <div className="mt-8">

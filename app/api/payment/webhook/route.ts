@@ -5,7 +5,7 @@ import { stripe } from "@/lib/stripe";
 import { connectDB } from "@/lib/mongodb";
 import Invoice from "@/models/Invoice";
 import { sendEmail } from "@/lib/email";
-import User from "@/models/User";
+
 
 export async function POST(
   request: NextRequest
@@ -49,12 +49,15 @@ export async function POST(
       );
 
 
-  } catch(error:any){
+  } catch(error: unknown){
 
-    console.error(
-      "Webhook signature error:",
-      error.message
-    );
+console.error(
+  "Webhook signature error:",
+  error instanceof Error
+    ? error.message
+    : error
+);
+
 
 
     return NextResponse.json(

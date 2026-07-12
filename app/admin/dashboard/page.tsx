@@ -12,54 +12,57 @@ import { connectDB } from "@/lib/mongodb";
 import Invoice from "@/models/Invoice";
 import User from "@/models/User";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
-
-const user = await getCurrentUser();
-
-if (!user) {
-  redirect("/login");
-}
-
-if (user.role !== "admin") {
-  redirect("/403");
+interface RecentInvoice {
+  _id: string;
+  invoiceNumber: string;
+  total: number;
+  status: string;
+  createdAt: string | Date;
+  client?: {
+    name?: string;
+    companyName?: string;
+    email?: string;
+  };
 }
 export default async function AdminDashboard() {
   await connectDB();
 
   const [
-    totalClients,
-    totalInvoices,
-    paidInvoices,
-    recentInvoices,
-  ] = await Promise.all([
-    User.countDocuments({
-      role: "client",
-    }),
+  totalClients,
+  totalInvoices,
+  paidInvoices,
+  recentInvoicesRaw,
+] = await Promise.all([
+  User.countDocuments({
+    role: "client",
+  }),
 
-    Invoice.countDocuments(),
+  Invoice.countDocuments(),
 
-    Invoice.find({
-      status: "paid",
-    }),
+  Invoice.find({
+    status: "paid",
+  }),
 
-    Invoice.find()
-      .populate(
-        "client",
-        "name companyName email"
-      )
-      .sort({
-        createdAt: -1,
-      })
-      .limit(10)
-      .lean(),
-  ]);
+  Invoice.find()
+    .populate(
+      "client",
+      "name companyName email"
+    )
+    .sort({
+      createdAt: -1,
+    })
+    .limit(10)
+    .lean(),
+]);
 
+
+const recentInvoices =
+  recentInvoicesRaw as unknown as RecentInvoice[];
   const totalRevenue = paidInvoices.reduce(
-    (sum: number, invoice: any) =>
-      sum + invoice.total,
-    0
-  );
+  (sum: number, invoice: { total: number }) =>
+    sum + invoice.total,
+  0
+);
 
   const pendingInvoices =
     totalInvoices - paidInvoices.length;
@@ -278,7 +281,7 @@ export default async function AdminDashboard() {
 
               <tbody>
 
-                {recentInvoices.map((invoice: any) => (
+                {recentInvoices.map((invoice: RecentInvoice) => (
 
                   <tr
                     key={invoice._id.toString()}

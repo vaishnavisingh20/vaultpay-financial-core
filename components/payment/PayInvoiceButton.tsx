@@ -68,17 +68,16 @@ export default function PayInvoiceButton({
 
 
 
-    } catch(error:any){
+} catch (error: unknown) {
 
-      toast.error(
-        error?.response?.data?.message ||
-        "Payment failed"
-      );
+  const message =
+    error instanceof Error
+      ? error.message
+      : "Payment failed";
 
+  toast.error(message);
 
-      setLoading(false);
-
-    }
+}
 
   }
 

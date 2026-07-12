@@ -7,7 +7,7 @@ export default function UnauthorizedPage() {
   return (
     <AppLayout
       title="403 Unauthorized"
-      subtitle="You don't have permission to access this page."
+      subtitle="You don&apos;t have permission to access this page."
     >
       <div className="mx-auto max-w-3xl">
 
@@ -27,7 +27,7 @@ export default function UnauthorizedPage() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-slate-400">
-            Your account doesn't have permission to view this
+            Your account doesn&apos;t have permission to view this
             resource. If you believe this is an error, please
             contact your administrator.
           </p>

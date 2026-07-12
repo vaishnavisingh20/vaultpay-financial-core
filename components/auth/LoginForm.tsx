@@ -56,12 +56,15 @@ export default function LoginForm() {
       );
 
       router.refresh();
-    } catch (error: any) {
-      toast.error(
-        error?.response?.data?.message ||
-          "Unable to login."
-      );
-    } finally {
+    } catch(error: unknown){
+
+ toast.error(
+   error instanceof Error
+     ? error.message
+     : "Login failed"
+ );
+
+}finally {
       setLoading(false);
     }
   }
@@ -173,7 +176,7 @@ export default function LoginForm() {
       </div>
 
       <p className="text-center text-sm text-slate-400">
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <Link
           href="/register"
           className="font-semibold text-blue-400 transition hover:text-blue-300"

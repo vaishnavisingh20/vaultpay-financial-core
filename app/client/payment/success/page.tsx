@@ -10,15 +10,6 @@ import AppLayout from "@/components/layout/AppLayout";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 
-const user = await getCurrentUser();
-
-if (!user) {
-  redirect("/login");
-}
-
-if (user.role !== "client") {
-  redirect("/403");
-}
 interface Props {
   searchParams: Promise<{
     session_id?: string;
@@ -28,9 +19,19 @@ interface Props {
 export default async function PaymentSuccessPage({
   searchParams,
 }: Props) {
-  const params = await searchParams;
+  
+const user = await getCurrentUser();
+ const params = await searchParams;
 
   const sessionId = params.session_id;
+if (!user) {
+  redirect("/login");
+}
+
+if (user.role !== "client") {
+  redirect("/403");
+}
+ 
 
   return (
     <AppLayout

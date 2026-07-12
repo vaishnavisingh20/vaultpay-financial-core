@@ -4,11 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
-  FileText,
   PlusCircle,
-  User,
   LogOut,
-  CreditCard,
 } from "lucide-react";
 
 import { useAuthContext } from "@/context/AuthContext";

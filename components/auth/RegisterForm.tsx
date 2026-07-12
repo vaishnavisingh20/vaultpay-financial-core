@@ -81,12 +81,14 @@ export default function RegisterForm() {
 
       router.replace("/login");
       router.refresh();
-    } catch (error: any) {
-      toast.error(
-        error?.response?.data?.message ||
-          "Registration failed."
-      );
-    } finally {
+    } catch (error: unknown) {
+  const message =
+    error instanceof Error
+      ? error.message
+      : "Registration failed";
+
+  toast.error(message);
+}finally {
       setLoading(false);
     }
   }

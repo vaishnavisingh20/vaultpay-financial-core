@@ -1,26 +1,18 @@
 import nodemailer from "nodemailer";
+import type { Attachment } from "nodemailer/lib/mailer";
 
-export const transporter =
-  nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
 
-    host:
-      process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
 
-    port:
-      Number(process.env.SMTP_PORT),
+  secure: false,
 
-    secure:false,
-
-    auth:{
-      user:
-        process.env.SMTP_USER,
-
-      pass:
-        process.env.SMTP_PASSWORD,
-    },
-
-  });
-
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD,
+  },
+});
 
 
 export async function sendEmail({
@@ -28,17 +20,16 @@ export async function sendEmail({
   subject,
   html,
   attachments,
-}:{
-  to:string;
-  subject:string;
-  html:string;
-  attachments?:any[];
-}){
+}: {
+  to: string;
+  subject: string;
+  html: string;
+  attachments?: Attachment[];
+}) {
 
   await transporter.sendMail({
 
-    from:
-      process.env.EMAIL_FROM,
+    from: process.env.EMAIL_FROM,
 
     to,
 

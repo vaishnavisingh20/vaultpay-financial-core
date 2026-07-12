@@ -2,11 +2,12 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import type { Route } from "next";
 
 import { useAuthContext } from "@/context/AuthContext";
 
 interface UseAuthOptions {
-  redirectTo?: string;
+  redirectTo?: Route;
   requiredRole?: "admin" | "client";
 }
 
@@ -30,6 +31,7 @@ export function useAuth(options: UseAuthOptions = {}) {
       if (options.redirectTo) {
         router.replace(options.redirectTo);
       }
+
       return;
     }
 
@@ -39,6 +41,7 @@ export function useAuth(options: UseAuthOptions = {}) {
     ) {
       router.replace("/403");
     }
+
   }, [
     loading,
     isAuthenticated,
