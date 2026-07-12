@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VaultPay Financial Core
 
-## Getting Started
+A secure B2B invoice management and payment portal built for corporate billing workflows. VaultPay enables administrators to create and manage invoices while clients can securely access invoices, make payments, and download PDF receipts.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Authentication & Authorization
+- JWT-based authentication
+- Secure cookie-based sessions
+- Role-based access control (RBAC)
+- Admin and Client dashboards
+- Protected routes
+
+### Admin Features
+- Create invoices
+- Manage client invoices
+- View invoice details
+- Track payment status
+
+### Client Features
+- Secure client login
+- View assigned invoices
+- Invoice details page
+- Download invoice PDF receipts
+- Payment-ready workflow
+
+### Invoice Management
+- Invoice creation
+- Invoice items management
+- Subtotal, tax, and total calculation
+- Invoice status tracking
+- PDF invoice generation
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- Next.js 15 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS
+- Lucide React
+- React Hot Toast
+
+### Backend
+- Next.js API Routes
+- MongoDB
+- Mongoose
+- JWT Authentication
+- Jose JWT library
+
+### Payments
+- Stripe Checkout Integration
+
+### Deployment
+- Vercel
+- MongoDB Atlas
+
+---
+
+## 📁 Project Structure
+
+```
+vaultpay-financial-core
+│
+├── app
+│   ├── admin
+│   ├── client
+│   ├── api
+│   └── login
+│
+├── components
+│   ├── layout
+│   ├── ui
+│   └── invoices
+│
+├── lib
+│   ├── auth.ts
+│   └── mongodb.ts
+│
+├── models
+│   ├── User.ts
+│   └── Invoice.ts
+│
+├── utils
+│
+├── public
+│
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 👥 User Roles
 
-## Learn More
+### Admin
+Can:
+- Create invoices
+- Manage billing records
+- Monitor payments
 
-To learn more about Next.js, take a look at the following resources:
+### Client
+Can:
+- View personal invoices
+- Download receipts
+- Complete payments
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📌 Future Improvements
 
-## Deploy on Vercel
+- Email invoice notifications
+- Automated payment reminders
+- Advanced analytics dashboard
+- Invoice search and filtering
+- Complete Stripe webhook automation
+- Audit logs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 👨‍💻 Developer
+
+Built as a production-focused B2B SaaS invoice management platform using modern full-stack technologies.
